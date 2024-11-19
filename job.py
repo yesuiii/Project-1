@@ -110,4 +110,4 @@ if not filtered_df.empty:
     difference = avg_salary - industry_avg_salary
 
     comparison = "higher" if difference > 0 else "lower"
-    st.write(f"Compared to the industry average, this job category's salary is **{comparison}** by **{abs(difference):,.0f} ₮**.")
+    st.write(f"Compared to the industry average, this job's salary is **{comparison}** by **{abs(difference):,.0f} ₮**.")
