@@ -67,28 +67,22 @@ with tab2:
             category_avg = df[df['Category'] == category]['Salary'].mean()
             st.write(f"- **{category}:** {category_avg:,.0f} ₮")
 
-        # Visualizations
+        # Visualizations using Streamlit's charting functions
         st.write("### Salary Distribution & Job Title vs Salary")
         
         col1, col2 = st.columns(2)
 
         with col1:
-            # Salary Distribution
-            fig1, ax1 = plt.subplots(figsize=(8, 6))
-            sns.histplot(filtered_df['Salary'], bins=20, kde=True, ax=ax1, color='skyblue')
-            ax1.set_title('Salary Distribution', fontsize=16)
-            ax1.set_xlabel('Salary (₮)', fontsize=12)
-            ax1.set_ylabel('Frequency', fontsize=12)
-            st.pyplot(fig1)
+            # Salary Distribution (using Streamlit's st.bar_chart)
+            salary_data = filtered_df['Salary']
+            salary_distribution = salary_data.value_counts().sort_index()  # Create a distribution
+            st.bar_chart(salary_distribution)  # Display the bar chart
 
         with col2:
-            # Salary by Job Title
-            fig2, ax2 = plt.subplots(figsize=(8, 6))
-            filtered_df.groupby('Job Title')['Salary'].mean().sort_values().plot(kind='bar', ax=ax2, color='lightgreen')
-            ax2.set_xlabel('Average Salary (₮)', fontsize=12)
-            ax2.set_ylabel('Job Title', fontsize=12)
-            ax2.set_title('Average Salary by Job Title', fontsize=16)
-            st.pyplot(fig2)
+            # Salary by Job Title (using Streamlit's st.bar_chart)
+            salary_by_job = filtered_df.groupby('Job Title')['Salary'].mean().sort_values()
+            st.bar_chart(salary_by_job)  # Display the bar chart
+
 
 # Tab 3 - Salary Prediction with XGBoost
 with tab3:
