@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
@@ -8,38 +9,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 import xgboost as xgb
 
-# Custom CSS to style the app
-st.markdown("""
-    <style>
-        .main {
-            background-color: #f4f7f6;
-            padding: 10px;
-            font-family: 'Arial', sans-serif;
-        }
-        h1 {
-            text-align: center;
-            color: #2e3a59;
-        }
-        .stTextInput input {
-            font-size: 14px;
-            padding: 10px;
-        }
-        .stButton button {
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
-        }
-        .stDataFrame {
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .stSlider div {
-            font-size: 14px;
-        }
-    </style>
-""", unsafe_allow_html=True)
 
-# Function to clean and reformat the date
 def clean_date(date_raw):
     date_raw = date_raw.replace("сарын", "").strip()
     if len(date_raw.split()) == 1:
@@ -195,10 +165,10 @@ with tab4:
 
 # Tab 5 - Comparisons
 with tab5:
-    st.subheader("Compare Two Jobs")
+    st.subheader("Compare Two Job Searches")
     
-    search_query1 = st.text_input("Search Job 1:", "")
-    search_query2 = st.text_input("Search Job 2:", "")
+    search_query1 = st.text_input("Search Query 1:", "")
+    search_query2 = st.text_input("Search Query 2:", "")
     
     if search_query1 and search_query2:
         search_results1 = filtered_df[filtered_df['Job Title'].str.contains(search_query1, case=False, na=False)]
@@ -234,16 +204,20 @@ with tab5:
         st.write("### Comparison Results")
         st.dataframe(comparison_df, use_container_width=True)
 
-        st.write("### Comparison Visualization")
-        fig, ax = plt.subplots(figsize=(10, 6))
-        comparison_df.set_index(" ")[["Average Salary", "Minimum Salary", "Maximum Salary"]].plot(
-            kind='bar',
-            ax=ax,
-            color=['skyblue', 'orange', 'lightgreen']
-        )
-        ax.set_title("Comparison of Job Searches", fontsize=16)
-        ax.set_ylabel("Values", fontsize=12)
-        ax.set_xlabel("Search Query", fontsize=12)
-        st.pyplot(fig)
+        st.write("### Comparison Visualizations")
+
+        # Creating columns for better layout
+        col1, col2 = st.columns(2)
+
+        with col1:
+            # Bar chart for salary comparison
+            salary_data = comparison_df[["Query", "Average Salary", "Minimum Salary", "Maximum Salary"]].set_index("Query")
+            st.bar_chart(salary_data, stack= False)
+
+        with col2:
+            # Line chart for job count comparison
+            job_count_data = comparison_df[["Query", "Job Count"]].set_index("Query")
+            st.bar_chart(job_count_data)
+    
     else:
         st.write("Please enter both search queries to compare.")
