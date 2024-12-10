@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
@@ -33,6 +33,11 @@ def preprocess_data(df):
     return df
 
 st.markdown("<h1>Mongolian Job Salary Analysis 💼 </h1>", unsafe_allow_html=True)
+st.markdown("""
+    This app allows you to analyze job salary data for various positions in Mongolia. 
+    You can explore salary insights, visualize salary distributions, predict salaries for specific job titles, 
+    and compare job positions based on salary data.
+""", unsafe_allow_html=True)
 
 job_title_filter = st.text_input("Enter Job Title (or part of it):", "")
 
@@ -46,6 +51,11 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Data", "📈 Insights", "🤖 Pred
 # Tab 1 - Displaying Filtered Data
 with tab1:
     st.subheader("Filtered Data", anchor="data")
+    with st.expander("Description of Data Tab"):
+        st.markdown("""
+            In this tab, you can see a table of job listings that match the job title you entered. 
+            The data includes details such as job title, company, salary, and category.
+        """, unsafe_allow_html=True)
     st.write(f"Displaying **{len(filtered_df)}** results for jobs matching '{job_title_filter}'")
     st.dataframe(filtered_df, use_container_width=True)
 
@@ -53,6 +63,11 @@ with tab1:
 with tab2:
     if not filtered_df.empty:
         st.subheader("Salary Insights")
+        with st.expander("Description of Insights Tab"):
+            st.markdown("""
+                This tab provides insights into the salary data, including average salaries, 
+                top-paying companies, and the distribution of salaries across different job categories.
+            """, unsafe_allow_html=True)
         avg_salary = filtered_df['Salary'].mean()
         st.write(f"**Average Salary:** {avg_salary:,.0f} ₮")
         st.write(f"**Max Salary:** {filtered_df['Salary'].max():,.0f} ₮")
@@ -88,6 +103,11 @@ with tab2:
 with tab3:
     if not filtered_df.empty:
         st.subheader("Salary Prediction with XGBoost")
+        with st.expander("Description of Prediction Tab"):
+            st.markdown("""
+                In this tab, you can predict the salary for a specific job title using machine learning models like XGBoost. 
+                You can select a job title, and the app will predict the salary based on historical data.
+            """, unsafe_allow_html=True)
     
         title = filtered_df['Job Title']
         selected_job = st.selectbox("Select a Job Title for Prediction", title)
@@ -124,6 +144,11 @@ with tab3:
 with tab4:
     if not filtered_df.empty:
         st.subheader("Job Recommendations")
+        with st.expander("Description of Recommendations Tab"):
+            st.markdown("""
+                In this tab, you can get job recommendations based on your salary preferences. 
+                Use the salary range slider to filter job listings within your desired salary range.
+            """, unsafe_allow_html=True)
         
         salary_min = int(filtered_df['Salary'].min() / 10000) * 10000
         salary_max = int(filtered_df['Salary'].max() / 10000) * 10000
@@ -160,6 +185,11 @@ with tab4:
 # Tab 5 - Comparisons
 with tab5:
     st.subheader("Compare Two Job Searches")
+    with st.expander("Description of Comparison tab"):
+            st.markdown("""
+                This tab helps you compare salaries between different job positions. 
+            You can compare multiple job titles and see how their salaries differ.
+             """, unsafe_allow_html=True)
     
     search_query1 = st.text_input("Search Query 1:", "")
     search_query2 = st.text_input("Search Query 2:", "")
