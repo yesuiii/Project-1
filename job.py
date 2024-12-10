@@ -102,7 +102,7 @@ with tab2:
 # Tab 3 - Salary Prediction with XGBoost
 with tab3:
     if not filtered_df.empty:
-        st.subheader("Salary Prediction with XGBoost")
+        st.subheader("Salary Prediction")
         with st.expander("Description of Prediction Tab"):
             st.markdown("""
                 In this tab, you can predict the salary for a specific job title using machine learning models like XGBoost. 
@@ -127,7 +127,7 @@ with tab3:
         X_transformed = preprocessor.fit_transform(X)
     
         # Train-test split
-        X_train, X_test, y_train, y_test = train_test_split(X_transformed, y, test_size=0.5, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X_transformed, y, test_size=0.3, random_state=42)
     
         # Train XGBoost model
         model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1, random_state=42)
@@ -188,7 +188,7 @@ with tab5:
     with st.expander("Description of Comparison tab"):
             st.markdown("""
                 This tab helps you compare salaries between different job positions. 
-            You can compare multiple job titles and see how their salaries differ.
+            You can compare two job titles and see how their salaries differ.
              """, unsafe_allow_html=True)
     
     search_query1 = st.text_input("Search Query 1:", "")
