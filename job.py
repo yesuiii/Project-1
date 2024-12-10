@@ -195,10 +195,10 @@ with tab4:
 
 # Tab 5 - Comparisons
 with tab5:
-    st.subheader("Compare Two Job Searches")
+    st.subheader("Compare Two Jobs")
     
-    search_query1 = st.text_input("Search Query 1:", "")
-    search_query2 = st.text_input("Search Query 2:", "")
+    search_query1 = st.text_input("Search Job 1:", "")
+    search_query2 = st.text_input("Search Job 2:", "")
     
     if search_query1 and search_query2:
         search_results1 = filtered_df[filtered_df['Job Title'].str.contains(search_query1, case=False, na=False)]
@@ -236,7 +236,7 @@ with tab5:
 
         st.write("### Comparison Visualization")
         fig, ax = plt.subplots(figsize=(10, 6))
-        comparison_df.set_index("Query")[["Average Salary", "Minimum Salary", "Maximum Salary"]].plot(
+        comparison_df.set_index(" ")[["Average Salary", "Minimum Salary", "Maximum Salary"]].plot(
             kind='bar',
             ax=ax,
             color=['skyblue', 'orange', 'lightgreen']
