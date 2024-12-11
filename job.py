@@ -82,19 +82,19 @@ with tab2:
             category_avg = df[df['Category'] == category]['Salary'].mean()
             st.write(f"- **{category}:** {category_avg:,.0f} ₮")
 
-        # Visualizations using Streamlit's charting functions
+        # Visualizations
         st.write("### Salary Distribution & Job Title vs Salary")
         
         col1, col2 = st.columns(2)
 
         with col1:
-            # Salary Distribution (using Streamlit's st.bar_chart)
+            # Salary Distribution
             salary_data = filtered_df['Salary']
             salary_distribution = salary_data.value_counts().sort_index()  # Create a distribution
             st.bar_chart(salary_distribution)  # Display the bar chart
 
         with col2:
-            # Salary by Job Title (using Streamlit's st.bar_chart)
+            # Salary by Job Title
             salary_by_job = filtered_df.groupby('Job Title')['Salary'].mean().sort_values()
             st.bar_chart(salary_by_job)  # Display the bar chart
 
@@ -116,20 +116,19 @@ with tab3:
         X = filtered_df.drop(columns=['Salary', 'Date'])
         y = filtered_df['Salary']
     
-        # Handle categorical variables using one-hot encoding
+    
         categorical_features = X.select_dtypes(include=['object']).columns
         preprocessor = ColumnTransformer(
             transformers=[
                 ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features)],
             remainder='passthrough')
     
-        # Transform features
         X_transformed = preprocessor.fit_transform(X)
     
         # Train-test split
         X_train, X_test, y_train, y_test = train_test_split(X_transformed, y, test_size=0.3, random_state=42)
     
-        # Train XGBoost model
+       
         model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.1, random_state=42)
         model.fit(X_train, y_train)
     
@@ -230,16 +229,13 @@ with tab5:
 
         st.write("### Comparison Visualizations")
 
-        # Creating columns for better layout
         col1, col2 = st.columns(2)
 
         with col1:
-            # Bar chart for salary comparison
             salary_data = comparison_df[["Query", "Average Salary", "Minimum Salary", "Maximum Salary"]].set_index("Query")
             st.bar_chart(salary_data, stack= False)
 
         with col2:
-            # Line chart for job count comparison
             job_count_data = comparison_df[["Query", "Job Count"]].set_index("Query")
             st.bar_chart(job_count_data)
     
