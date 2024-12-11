@@ -10,16 +10,16 @@ from sklearn.compose import ColumnTransformer
 import xgboost as xgb
 
 
-def clean_date(date_raw):
-    date_raw = date_raw.replace("сарын", "").strip()
-    if len(date_raw.split()) == 1:
-        date_raw = f"{date_raw} 1"
-    try:
-        month, day = map(int, date_raw.split())
-        current_year = 2024
-        return f"{current_year}-{month:02d}-{day:02d}"
-    except ValueError:
-        return "Invalid date"
+# def clean_date(date_raw):
+#     date_raw = date_raw.replace("сарын", "").strip()
+#     if len(date_raw.split()) == 1:
+#         date_raw = f"{date_raw} 1"
+#     try:
+#         month, day = map(int, date_raw.split())
+#         current_year = 2024
+#         return f"{current_year}-{month:02d}-{day:02d}"
+#     except ValueError:
+#         return "Invalid date"
 
 @st.cache_data
 def load_data():
